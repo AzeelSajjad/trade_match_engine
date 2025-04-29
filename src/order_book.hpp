@@ -2,6 +2,8 @@
 #define ORDER_BOOK_HPP
 
 #include "order.hpp"
+#include <map>
+#include <vector>
 
 class OrderBook {
 public:
@@ -10,6 +12,9 @@ public:
     void removeOrder(int orderId);
     Order getBestBuy();
     Order getBestSell();
+private:
+    map<double, vector<Order>> buyOrders;
+    map<double, vector<Order>> sellOrders;
 };
 
 #endif 

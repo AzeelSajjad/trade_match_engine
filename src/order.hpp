@@ -10,5 +10,5 @@ struct Order {
     double price;
     int quantity;
     OrderSide side;
-    
+    long timestamp;
 };

@@ -8,6 +8,9 @@ using namespace std;
 
 void OrderBook::addOrder(const Order &order){
     if(order.side == OrderSide::BUY){
-        buyOrders.insert({});
+        buyOrders[order.price].push_back(order);
+    }
+    if(order.side == OrderSide::SELL){
+        sellOrders[order.price].push_back(order);
     }
 };

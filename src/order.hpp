@@ -2,7 +2,7 @@
 
 enum class OrderSide {
     BUY,
-    SIDE
+    SELL
 };
 
 struct Order {

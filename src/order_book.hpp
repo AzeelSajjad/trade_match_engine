@@ -15,6 +15,7 @@ public:
 private:
     map<double, vector<Order>> buyOrders;
     map<double, vector<Order>> sellOrders;
+    map<int, pair<double, OrderSide>> orderIdToPrice;
 };
 
 #endif 

@@ -8,6 +8,9 @@
 #include <algorithm>
 using namespace std;
 
+OrderBook::OrderBook() {
+}
+
 void OrderBook::addOrder(const Order &order){
     if(order.side == OrderSide::BUY){
         buyOrders[order.price].push_back(order);
@@ -50,30 +53,20 @@ void OrderBook::removeOrder(int orderId){
     orderIdToPrice.erase(orderId);
 }
 
-vector<Order>& OrderBook::getBestBuy(){
-    static vector<Order> empty;
+vector<Order> OrderBook::getBestBuy(){
+    vector<Order> result;
     if(buyOrders.empty()){
-        fprintf(stderr, "Error: No buy orders available.\n");
-        return empty;
+        cerr << "Error: No buy orders available." << endl;
+        return result;
     }
-    auto& bestOrders = buyOrders.rbegin()->second;
-    if(bestOrders.empty()){
-        fprintf(stderr, "Error: Empty order vector at the best price.\n");
-        return empty;
-    }
-    return bestOrders;
+    return buyOrders.rbegin()->second;
 }
 
-vector<Order>& OrderBook::getBestSell(){
-    static vector<Order> empty;
+vector<Order> OrderBook::getBestSell(){
+    vector<Order> result;
     if(sellOrders.empty()){
-        fprintf(stderr, "Error: No sell orders available.\n");
-        return empty;
+        cerr << "Error: No sell orders available." << endl;
+        return result;
     }
-    auto& bestOrders = sellOrders.begin()->second;
-     if(bestOrders.empty()){
-        fprintf(stderr, "Error: Empty order vector at the lowest price.\n");
-        return empty;
-    }
-    return bestOrders;
+    return sellOrders.begin()->second;
 }

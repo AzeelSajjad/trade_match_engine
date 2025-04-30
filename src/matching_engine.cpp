@@ -6,47 +6,52 @@
 #include <algorithm>
 using namespace std;
 
+MatchingEngine::MatchingEngine() {
+}
+
 bool MatchingEngine::processOrder(Order order) {
+    bool shouldAddToBook = true; 
     if (order.side == OrderSide::BUY) {
-        vector<Order> orders = orderBook.getBestSell(); 
-        for (auto& o : orders) {
-            if (o.price <= order.price) {
-                int fillAmount = min(o.quantity, order.quantity);
-                o.quantity -= fillAmount;
-                order.quantity -= fillAmount;
-                if (o.quantity == 0) {
-                    orderBook.removeOrder(o.orderId);
-                }
-                if (order.quantity == 0) {
-                    orderBook.removeOrder(order.orderId);
-                    break;
-                }
-            }
-        }
-        if (order.quantity > 0) {
-            orderBook.addOrder(order);
-        }
-        return true;
-    } else if (order.side == OrderSide::SELL) {
-        vector<Order> orders = orderBook.getBestBuy();
-        for (auto& o : orders) {
-            if(o.price >= order.price){
-                int fillAmount = min(o.quantity, order.quantity);
-                o.quantity -= fillAmount;
-                order.quantity -= fillAmount;
-                if(o.quantity == 0){
-                    orderBook.removeOrder(o.orderId);
-                }
-                if(order.quantity == 0){
-                    orderBook.removeOrder(order.orderId);
-                    break;
+        vector<Order> bestSellOrders = orderBook.getBestSell();
+        if (!bestSellOrders.empty() && bestSellOrders[0].price <= order.price) {
+            for (auto& sellOrder : bestSellOrders) {
+                int fillAmount = min(sellOrder.quantity, order.quantity);
+                if (fillAmount > 0) {
+                    sellOrder.quantity -= fillAmount;
+                    order.quantity -= fillAmount;
+                    if (sellOrder.quantity == 0) {
+                        orderBook.removeOrder(sellOrder.orderId);
+                    }
+                    if (order.quantity == 0) {
+                        shouldAddToBook = false;
+                        break;
+                    }
                 }
             }
         }
-        if(order.quantity > 0) {
-            orderBook.addOrder(order);
+    } 
+    else if (order.side == OrderSide::SELL) {
+        vector<Order> bestBuyOrders = orderBook.getBestBuy();
+        if (!bestBuyOrders.empty() && bestBuyOrders[0].price >= order.price) {
+            for (auto& buyOrder : bestBuyOrders) {
+                int fillAmount = min(buyOrder.quantity, order.quantity);
+                if (fillAmount > 0) {
+                    buyOrder.quantity -= fillAmount;
+                    order.quantity -= fillAmount;
+                    if (buyOrder.quantity == 0) {
+                        orderBook.removeOrder(buyOrder.orderId);
+                    }
+                    if (order.quantity == 0) {
+                        shouldAddToBook = false;
+                        break;
+                    }
+                }
+            }
         }
-        return true;
     }
-    return false;
+    if (shouldAddToBook && order.quantity > 0) {
+        orderBook.addOrder(order);
+    }
+    
+    return true;
 }

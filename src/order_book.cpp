@@ -56,7 +56,7 @@ void OrderBook::removeOrder(int orderId){
 vector<Order> OrderBook::getBestBuy(){
     vector<Order> result;
     if(buyOrders.empty()){
-        cerr << "Error: No buy orders available." << endl;
+        cout << "Error: No buy orders available." << endl;
         return result;
     }
     return buyOrders.rbegin()->second;
@@ -65,7 +65,7 @@ vector<Order> OrderBook::getBestBuy(){
 vector<Order> OrderBook::getBestSell(){
     vector<Order> result;
     if(sellOrders.empty()){
-        cerr << "Error: No sell orders available." << endl;
+        cout << "Error: No sell orders available." << endl;
         return result;
     }
     return sellOrders.begin()->second;

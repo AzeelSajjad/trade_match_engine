@@ -4,6 +4,7 @@
 #include "order.hpp"
 #include <map>
 #include <vector>
+using namespace std;
 
 class OrderBook {
 public:

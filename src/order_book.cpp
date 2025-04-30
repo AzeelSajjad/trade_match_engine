@@ -4,6 +4,7 @@
 #include <map>         
 #include <vector>      
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 void OrderBook::addOrder(const Order &order){
@@ -14,7 +15,7 @@ void OrderBook::addOrder(const Order &order){
         sellOrders[order.price].push_back(order);
     }
     orderIdToPrice[order.orderId] = {order.price, order.side};
-};
+}
 
 void OrderBook::removeOrder(int orderId){
     auto it = orderIdToPrice.find(orderId);
@@ -46,4 +47,30 @@ void OrderBook::removeOrder(int orderId){
         }
     }
     orderIdToPrice.erase(orderId);
+}
+
+Order OrderBook::getBestBuy(){
+    if(buyOrders.empty()){
+        fprintf(stderr, "Error: No buy orders available.\n");
+        return Order{-1, 0.0, 0, OrderSide::BUY, 0};
+    }
+    auto& bestOrders = buyOrders.rbegin()->second;
+    if(bestOrders.empty()){
+        fprintf(stderr, "Error: Empty order vector at the best price.\n");
+        return Order{-1, 0.0, 0, OrderSide::BUY, 0};
+    }
+    return bestOrders[0];
+}
+
+Order OrderBook::getBestSell(){
+    if(sellOrders.empty()){
+        fprintf(stderr, "Error: No sell orders available.\n");
+        return Order{-1, 0.0, 0, OrderSide::SELL, 0};
+    }
+    auto& bestOrders = sellOrders.begin()->second;
+     if(bestOrders.empty()){
+        fprintf(stderr, "Error: Empty order vector at the lowest price.\n");
+        return Order{-1, 0.0, 0, OrderSide::SELL, 0};
+    }
+    return bestOrders[0];
 }

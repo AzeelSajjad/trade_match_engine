@@ -10,8 +10,8 @@ public:
     OrderBook();
     void addOrder(const Order &order);
     void removeOrder(int orderId);
-    const vector<Order>& getBestBuy() const;
-    const vector<Order>& getBestSell() const;
+    vector<Order>& getBestBuy();
+    vector<Order>& getBestSell();
 private:
     map<double, vector<Order>> buyOrders;
     map<double, vector<Order>> sellOrders;

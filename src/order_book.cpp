@@ -50,8 +50,8 @@ void OrderBook::removeOrder(int orderId){
     orderIdToPrice.erase(orderId);
 }
 
-const vector<Order>& OrderBook::getBestBuy() const{
-    static const vector<Order> empty;
+vector<Order>& OrderBook::getBestBuy(){
+    static vector<Order> empty;
     if(buyOrders.empty()){
         fprintf(stderr, "Error: No buy orders available.\n");
         return empty;
@@ -64,8 +64,8 @@ const vector<Order>& OrderBook::getBestBuy() const{
     return bestOrders;
 }
 
-const vector<Order>& OrderBook::getBestSell() const{
-    static const vector<Order> empty;
+vector<Order>& OrderBook::getBestSell(){
+    static vector<Order> empty;
     if(sellOrders.empty()){
         fprintf(stderr, "Error: No sell orders available.\n");
         return empty;

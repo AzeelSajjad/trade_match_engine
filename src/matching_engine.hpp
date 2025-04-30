@@ -6,7 +6,7 @@
 class MatchingEngine {
 public:
     MatchingEngine();
-    bool processOrder(const Order& order);
+    bool processOrder(Order order);
 
 private:
     OrderBook orderBook;

@@ -5,6 +5,7 @@
 #include <vector>      
 #include <iostream>
 #include <stdio.h>
+#include <algorithm>
 using namespace std;
 
 void OrderBook::addOrder(const Order &order){
@@ -33,7 +34,7 @@ void OrderBook::removeOrder(int orderId){
                     buyOrders.erase(price);
                 }
             }
-        } else {
+        } else if(side == OrderSide::SELL) {
             auto& orders = sellOrders[price];
             auto orderIt = find_if(orders.begin(), orders.end(), [orderId](const Order& o) {
                 return o.orderId == orderId;
